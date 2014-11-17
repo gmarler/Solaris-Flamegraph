@@ -33,7 +33,6 @@ our $colors = "hot";                  # color theme
 our $bgcolor1 = "#eeeeee";            # background color gradient start
 our $bgcolor2 = "#eeeeb0";            # background color gradient stop
 our $nameattrfile;                    # file holding function attributes
-our $timemax;                         # (override the) sum of the counts
 our $factor = 1;                      # factor to scale counts by
 our $hash = 0;                        # color by function name
 our $palette = 0;                     # if we use consistent palettes (default off)
@@ -54,7 +53,6 @@ my $ypad1 = $fontsize * 4;      # pad top, include title
 my $ypad2 = $fontsize * 2 + 10; # pad bottom, include labels
 my $xpad = 10;                  # pad lefm and right
 my $framepad = 1;               # vertical padding for frames
-my $depthmax = 0;
 my %Events;
 my %nameattr;
 
@@ -66,13 +64,6 @@ my %Tmp;
 #
 # Parse Input Variables (to be eliminated)
 #
-my @Data;
-my $last = [];
-my $time = 0;
-my $delta = undef;
-my $ignored = 0;
-my $line;
-my $maxdelta = 1;
 
 
 #
@@ -351,6 +342,29 @@ $DB::single = 1;
 sub create_svg :Private {
   my ($self, $c) = @_;
 
+  # Global Resets
+  %Node = ();
+  %Tmp  = ();
+
+  # These were tunables - may yet be again...
+  my $timemax;                         # (override the) sum of the counts
+
+  #
+  # Parse Input Variables
+  #
+  my $line;
+  my @Data;
+  my $time = 0;
+  my $last = [];
+  my $delta = undef;
+  my $ignored = 0;
+  my $maxdelta = 1;
+
+  #
+  # Package Lexical Internal Variables
+  #
+  my $depthmax = 0;
+
   if ($titletext eq "") {
     unless ($inverted) {
       $titletext = $titledefault;
@@ -377,8 +391,8 @@ sub create_svg :Private {
   if ($colors eq "mem") { $bgcolor1 = "#eeeeee"; $bgcolor2 = "#e0e0ff"; }
   if ($colors eq "io")  { $bgcolor1 = "#f8f8f8"; $bgcolor2 = "#e8e8e8"; }
 
-  # TODO: Extract the collapsed stack into a scalar and treat that scalar
-  #       as a filehandle
+  # Extract the collapsed stack into a scalar and treat that scalar
+  # as a filehandle
   my $flamegraph       = $c->stash->{flamegraph};
   my $collapsed_stacks = $flamegraph->stacks;
   my $stack_fh         = IO::Scalar->new(\$collapsed_stacks);
