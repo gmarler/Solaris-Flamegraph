@@ -400,6 +400,7 @@ use LWP::UserAgent             qw();
 use HTTP::Request::Common      qw( POST PUT );
 use FindBin                    qw();
 use URI::Escape                qw();
+use Term::ProgressBar          qw();
 
 use lib "$FindBin::Bin/../lib";
 # use Perf::Schema qw();
@@ -480,7 +481,6 @@ sub http_upload {
   $HTTP::Request::Common::DYNAMIC_FILE_UPLOAD = 1;
 
   my ($ua) = LWP::UserAgent->new;
-  $ua->show_progress(1);
 
   my $server = 'control.gmarler.com';
   my $port = 3000;
@@ -507,13 +507,18 @@ sub http_upload {
   sub create_content_reader {
     my $gen = shift;
     my $len = shift;
+    my $progress = Term::ProgressBar->new({ name => "Upload", count => $len,
+                                            remove => 1, term_width => 64});
+
+    $progress->minor(0);
 
     my $size = 0;
     my $next_update = 0;
+
     return sub {
-      my $chunk = &$gen();
+      my $chunk = $gen->();
       $size += length($chunk) if $chunk;
-      #print "$size\n";
+      $next_update = $progress->update($size) if $size >= $next_update;
       return $chunk;
     }
 
