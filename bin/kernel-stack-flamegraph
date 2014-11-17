@@ -502,13 +502,13 @@ sub http_upload {
   my $resp = $ua->request($req);
   die "error while uploading $filename: ", $resp->message if $resp->is_error;
 
-  print "Please point your browser at this URL:\n" . $resp->content . "\n";
+  say "\nPlease point your browser at this URL:\n" . $resp->content;
 
   sub create_content_reader {
     my $gen = shift;
     my $len = shift;
     my $progress = Term::ProgressBar->new({ name => "Upload", count => $len,
-                                            remove => 1, term_width => 64});
+                                            term_width => 80});
 
     $progress->minor(0);
 
