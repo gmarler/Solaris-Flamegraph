@@ -9,7 +9,9 @@
  
 [% # Some basic HTML with a loop to display books -%]
 <table>
-<tr><th>Hostname</th><th>Inserted Into DB</th><th>Sample Begin</th><th>Sample End</th></tr>
+<tr><th>Hostname</th><th>Inserted Into DB</th><th>Sample Begin</th><th>Sample End</th>
+    <th>Delete?</th>
+</tr>
 [% USE dtf = DateTime::Format('DateTime::Format::Strptime', { pattern => "%T %D" }) %]
 [% # Display each flamegraph in a table row %]
 [% FOREACH flamegraph IN flamegraphs -%]
@@ -24,7 +26,11 @@
     <td>[% USE end = DateTime( from_object = flamegraph.end ) %]
         [% dtf.format( end.set_time_zone( flamegraph.host.timezone ) ) %]
     </td>
-    <td></td>
+    <td>
+      [% # Add a link to delete a flamegraph %]
+      <a href="[%
+        c.uri_for(c.controller.action_for('delete'), [flamegraph.id]) %]">Delete</a>
+    </td>
   </tr>
 [% END -%]
 </table>

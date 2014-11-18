@@ -201,6 +201,54 @@ sub base :Chained('/') :PathPart('flamegraph') :CaptureArgs(0) {
   $c->log->debug('*** INSIDE FLAMEGRAPH BASE METHOD ***');
 }
 
+=head2 object
+
+Fetch the specified flamegraph object based on the flamegraph ID and store
+it in the stash
+
+=cut
+
+sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
+  # $id = primary key of flamegraph to delete
+  my ($self, $c, $id) = @_;
+
+  # Find the flamegraph object and store it in the stash
+  $c->stash(object => $c->stash->{flamegraph_rs}->find($id));
+
+  # Make sure the lookup was successful.  You would probably want to do
+  # something like this to be more robust:
+  # $c->detach('/error_404') if !$c->stash->{object};
+  die "Flamegraph $id not found!" if !$c->stash->{object};
+
+  # Print a message to the debug log
+  $c->log->debug("*** INSIDE OBJECT METHOD for obj id=$id ***");
+}
+
+=head delete
+
+Delete a flamegraph
+
+=cut
+
+sub delete :Chained('object') :PathPart('delete') :Args(0) {
+  my ($self, $c) = @_;
+
+  # use the flamegraph object staved by 'object' and delete it
+  $c->stash->{object}->delete;
+
+  # Set a status message to be displayed at the top of the view
+  # NOTE: Can only work across flash or some other session type
+  # $c->stash->{status_msg} = "Flamegraph deleted";
+
+  # Redirect the user back to the list page.  Note the use of
+  # $self->action_for as earlier.
+  # For the moment, including status message as a request query param.
+  # Fix later.
+  $c->response->redirect($c->uri_for($self->action_for('list'),
+    { status_msg => "Flamegraph deleted." } ));
+}
+
+
 =head2 upload_stack
 
 Upload stack trace output via a command line utility (usually)

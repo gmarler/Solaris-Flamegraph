@@ -401,6 +401,9 @@ use HTTP::Request::Common      qw( POST PUT );
 use FindBin                    qw();
 use URI::Escape                qw();
 use Term::ProgressBar          qw();
+use IO::Uncompress::Bunzip2    qw();
+use File::MMagic               qw();
+use Carp                       qw(croak);
 
 use lib "$FindBin::Bin/../lib";
 # use Perf::Schema qw();
@@ -417,7 +420,7 @@ use lib "$FindBin::Bin/../lib";
 #
 
 my $file;
-my ($start,$end,$hostname,$start_dt,$end_dt);
+my ($start,$end,$hostname,$start_dt,$end_dt,$description);
 #my $file = "/perfwork/P569-prof-SYS-197Hz-hotcpu.out-20141106-1400";
 
 Getopt::Long::GetOptions(
@@ -425,6 +428,7 @@ Getopt::Long::GetOptions(
   'start=s'      => \$start,
   'end=s'        => \$end,
   'hostname=s'   => \$hostname,
+  'desc=s'       => \$description,
 ) or die <<USAGE_END;
 
 USAGE: $0 [options]\n
@@ -432,6 +436,7 @@ USAGE: $0 [options]\n
     --start [ HH:MM:SS ]    # Starting timestamp
     --end   [ HH:MM:SS ]    # Ending   timestamp
   [ --hostname <hostname> ] # Hostname override
+  [ --desc "description"  ] # Description, which will be used in flamegraph title
 USAGE_END
 
 my $tzname = DateTime::TimeZone->new( name => 'local' )->name;
@@ -451,6 +456,14 @@ $end_dt   =
   DateTime::Format::Stats->parse_datetime($end)->set_time_zone($tzname);
 
 my $fh   = IO::File->new($file, "<") or die "Unable to open $file: $!";
+my $mm   = File::MMagic->new();
+my $mime_type = $mm->checktype_filehandle($fh);
+
+# Handle bzip2 compressed files
+if ($mime_type eq 'application/x-bzip2') {
+  $fh = IO::Uncompress::Bunzip2->new($file) or
+    croak "Unable top open bzip2 file: $file";
+}
 
 my $p = Solaris::PerfParser::DTraceStack->new(
           datastream => $fh, interval_subparse => 0, strip_datetime => 1,
