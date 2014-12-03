@@ -1,1 +1,13 @@
 Run script/solaris_flamegraph_web_server.pl to test the application.
+
+# DBIx::Class::Migration environment settings
+# From DBIx::Class::Migration::Script
+DBIC_MIGRATION_TARGET_DIR
+DBIC_MIGRATION_USERNAME
+DBIC_MIGRATION_PASSWORD
+DBIC_MIGRATION_DSN
+DBIC_MIGRATION_SANDBOX_CLASS
+
+export DBIC_MIGRATION_SCHEMA_CLASS=Solaris::Flamegraph::Schema
+
+export DBIC_MIGRATION_SANDBOX_CLASS=
