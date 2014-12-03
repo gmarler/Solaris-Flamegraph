@@ -6,5 +6,5 @@
 _build
 # Avoid archives of *this* distribution
 /Solaris-Flamegraph*
-share/solaris-flamegraph/*
-share/solaris-flamegraph.db
+share/solaris-flamegraph-schema/*
+share/solaris-flamegraph-schema.db

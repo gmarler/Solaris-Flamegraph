@@ -1,0 +1,16 @@
+$HASH1 = {
+           begin  => '2014-12-03T19:59:29',
+           creation
+                  => '2014-12-03T19:59:29',
+           end    => '2014-12-03T19:59:29',
+           flamegraph_id
+                  => 1,
+           host_fk
+                  => 1,
+           stacks => "unix`sys_syscall;genunix`open;genunix`openat;genunix`falloc 36\nunix`sys_".
+	"syscall;genunix`open;genunix`openat;genunix`set_errno 9\nunix`sys_syscall".
+	";genunix`open;genunix`openat;genunix`setf 16\nunix`sys_syscall;genunix`op".
+	"en;genunix`openat;genunix`unfalloc 39\nunix`sys_syscall;genunix`open;genu".
+	"nix`openat;genunix`vn_openat 14\nunix`sys_syscall;genunix`openat 17",
+           svg    => undef
+         };
