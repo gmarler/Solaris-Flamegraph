@@ -1,0 +1,15 @@
+$HASH1 = {
+           begin  => '2014-12-04T01:20:17',
+           creation
+                  => '2014-12-04T01:20:17',
+           desc   => 'Maxwell Smart\'s Perf Analysis',
+           end    => '2014-12-04T01:20:17',
+           flamegraph_id
+                  => 2,
+           host_fk
+                  => 2,
+           stacks => "unix`sys_syscall;genunix`open;genunix`openat;genunix`falloc 36\nunix`sys_".
+	"syscall;genunix`open;genunix`openat;genunix`unfalloc 39\nunix`sys_syscall".
+	";genunix`openat 17",
+           svg    => undef
+         };

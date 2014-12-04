@@ -1,9 +1,9 @@
 $HASH1 = {
-           begin  => '2014-12-04T01:08:36',
+           begin  => '2014-12-04T01:20:17',
            creation
-                  => '2014-12-04T01:08:36',
-           desc   => undef,
-           end    => '2014-12-04T01:08:36',
+                  => '2014-12-04T01:20:17',
+           desc   => 'Sigfried\'s Perf Analysis',
+           end    => '2014-12-04T01:20:17',
            flamegraph_id
                   => 1,
            host_fk
