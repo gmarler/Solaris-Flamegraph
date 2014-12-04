@@ -8,3 +8,5 @@ _build
 /Solaris-Flamegraph*
 share/solaris-flamegraph-schema/*
 share/solaris-flamegraph-schema.db
+share/solaris-flamegraph/*
+share/solaris-flamegraph.db

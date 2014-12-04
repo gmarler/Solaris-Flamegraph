@@ -37,6 +37,12 @@ column svg => {
   is_nullable         => 1,
 };
 
+column desc => {
+  data_type           => 'varchar',
+  size                => '80',
+  is_nullable         => 1,
+};
+
 belongs_to host => 'Solaris::Flamegraph::Schema::Result::Host',
                    {'foreign.host_id'=>'self.host_fk'};
 
