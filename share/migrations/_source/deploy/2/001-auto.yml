@@ -1,0 +1,188 @@
+---
+schema:
+  procedures: {}
+  tables:
+    flamegraphs:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - flamegraph_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - host_fk
+          match_type: ''
+          name: flamegraphs_fk_host_fk
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - host_id
+          reference_table: hosts
+          type: FOREIGN KEY
+      fields:
+        begin:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: begin
+          order: 3
+          size:
+            - 0
+        creation:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: creation
+          order: 2
+          size:
+            - 0
+        desc:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: desc
+          order: 8
+          size:
+            - 80
+        end:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: end
+          order: 4
+          size:
+            - 0
+        flamegraph_id:
+          data_type: int
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: flamegraph_id
+          order: 1
+          size:
+            - 0
+        host_fk:
+          data_type: int
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: host_fk
+          order: 5
+          size:
+            - 0
+        stacks:
+          data_type: blob
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: stacks
+          order: 6
+          size:
+            - 0
+        svg:
+          data_type: blob
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: svg
+          order: 7
+          size:
+            - 0
+      indices:
+        - fields:
+            - host_fk
+          name: flamegraphs_idx_host_fk
+          options: []
+          type: NORMAL
+      name: flamegraphs
+      options: []
+      order: 2
+    hosts:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - host_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        host_id:
+          data_type: int
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: host_id
+          order: 1
+          size:
+            - 0
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: name
+          order: 2
+          size:
+            - 32
+        timezone:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: timezone
+          order: 3
+          size:
+            - 64
+      indices: []
+      name: hosts
+      options: []
+      order: 1
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    sources:
+      - Flamegraph
+      - Host
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11020
